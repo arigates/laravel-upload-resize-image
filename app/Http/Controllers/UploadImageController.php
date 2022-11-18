@@ -16,10 +16,12 @@ class UploadImageController extends Controller
 
     public function submit(Request $request): JsonResponse
     {
-        if ($request->hasFile('image')) {
-            $image = $request->image;
-            $name = time().rand(1,100000000).'.'.$image->extension();
-            Storage::disk('public')->putFileAs('images', $image, $name);
+        if ($request->hasFile('images')) {
+
+            foreach ($request->file('images') as $image) {
+                $name = time().rand(1,100000000).'.'.$image->extension();
+                Storage::disk('public')->putFileAs('images', $image, $name);
+            }
 
             return response()->json("ok");
         }
